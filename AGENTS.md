@@ -6,7 +6,7 @@ Step and progress reporting for command line tools: a reporter that steps report
 
 - `bin/rspec`: run the specs
 - `bin/lint`: autocorrect with RuboCop and format with Syntax Tree
-- `bin/rubocop`, `bin/stree check '**/*.rb'`: check without changing files
+- `bin/rubocop`, `bin/stree check Gemfile Rakefile '*.gemspec' '**/*.rb'`: check without changing files
 
 ## Conventions
 
