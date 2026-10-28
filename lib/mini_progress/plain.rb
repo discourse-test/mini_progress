@@ -96,23 +96,23 @@ module MiniProgress
         line = +"#{finish_glyph(outcome)} #{step.title}"
         line << " #{format_count(count)}" if count > 0
         line << " (#{format_duration(monotonic - step.started_at)})"
-        line << " — #{I18n.t("progressbar.#{outcome}")}" unless outcome == :done
+        line << " — #{I18n.t("mini_progress.#{outcome}")}" unless outcome == :done
         line << annotations(step)
         @output.puts(line)
       end
     end
 
     def report_finalizing_begin
-      @mutex.synchronize { @output.puts(I18n.t("progressbar.finishing_up")) }
+      @mutex.synchronize { @output.puts(I18n.t("mini_progress.finishing_up")) }
     end
 
     def report_summary(runtime:, total:, failed:, skipped:)
-      tally = [I18n.t("progressbar.steps", count: total, number: total)]
-      tally << I18n.t("progressbar.steps_failed", number: failed) if failed > 0
-      tally << I18n.t("progressbar.steps_skipped", number: skipped) if skipped > 0
+      tally = [I18n.t("mini_progress.steps", count: total, number: total)]
+      tally << I18n.t("mini_progress.steps_failed", number: failed) if failed > 0
+      tally << I18n.t("mini_progress.steps_skipped", number: skipped) if skipped > 0
       @mutex.synchronize do
         @output.puts(
-          "#{I18n.t("progressbar.total")}: #{tally.join(", ")} (#{format_duration(runtime)})",
+          "#{I18n.t("mini_progress.total")}: #{tally.join(", ")} (#{format_duration(runtime)})",
         )
       end
     end
@@ -141,7 +141,7 @@ module MiniProgress
 
       step.last_heartbeat = now
       @output.puts(
-        "    #{step.title} #{format_count(current)} #{I18n.t("progressbar.processed")}#{annotations(step)}",
+        "    #{step.title} #{format_count(current)} #{I18n.t("mini_progress.processed")}#{annotations(step)}",
       )
     end
 

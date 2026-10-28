@@ -56,8 +56,8 @@ module MiniProgress
         # NO_COLOR disables color only when set to a non-empty value.
         @color = ENV["NO_COLOR"].to_s.empty?
         # Translated once here, not every frame.
-        @counting_label = I18n.t("progressbar.counting")
-        @eta_label = I18n.t("progressbar.eta")
+        @counting_label = I18n.t("mini_progress.counting")
+        @eta_label = I18n.t("mini_progress.eta")
         @steps = {}
         @pending_permanent = []
         @live_count = 0
@@ -397,25 +397,25 @@ module MiniProgress
       # The transient live line shown while the run finishes background work
       # after every step is done. The spinner animates it.
       def finalizing_line
-        "#{spinner} #{Ansi::DIM}#{I18n.t("progressbar.finishing_up")}#{Ansi::RESET}"
+        "#{spinner} #{Ansi::DIM}#{I18n.t("mini_progress.finishing_up")}#{Ansi::RESET}"
       end
 
       # The permanent end-of-run line: a Σ, the total runtime in the elapsed
       # column (so it lines up under the per-step durations), and the step tally.
       def summary_line(runtime, total, failed, skipped)
         columns = padded_columns("", runtime, dim: false)
-        line = +"#{Ansi::BOLD}Σ#{Ansi::RESET} #{title_field(I18n.t("progressbar.total"))}  "
+        line = +"#{Ansi::BOLD}Σ#{Ansi::RESET} #{title_field(I18n.t("mini_progress.total"))}  "
         line << columns << summary_tally(total, failed, skipped)
         line
       end
 
       def summary_tally(total, failed, skipped)
-        note = +"  #{I18n.t("progressbar.steps", count: total, number: total)}"
+        note = +"  #{I18n.t("mini_progress.steps", count: total, number: total)}"
         if failed > 0
-          note << "  #{Ansi::RED}#{I18n.t("progressbar.steps_failed", number: failed)}#{Ansi::RESET}"
+          note << "  #{Ansi::RED}#{I18n.t("mini_progress.steps_failed", number: failed)}#{Ansi::RESET}"
         end
         if skipped > 0
-          note << "  #{Ansi::YELLOW}#{I18n.t("progressbar.steps_skipped", number: skipped)}#{Ansi::RESET}"
+          note << "  #{Ansi::YELLOW}#{I18n.t("mini_progress.steps_skipped", number: skipped)}#{Ansi::RESET}"
         end
         note
       end
@@ -434,13 +434,13 @@ module MiniProgress
       def outcome_note(step)
         case step.state
         when :failed
-          "  #{Ansi::RED}#{I18n.t("progressbar.failed")}#{Ansi::RESET}"
+          "  #{Ansi::RED}#{I18n.t("mini_progress.failed")}#{Ansi::RESET}"
         when :interrupted
           if step.total&.positive?
             percent = [(step.current.to_f / step.total * 100).round, 100].min
-            "  #{Ansi::YELLOW}#{I18n.t("progressbar.interrupted_at", percent:)}#{Ansi::RESET}"
+            "  #{Ansi::YELLOW}#{I18n.t("mini_progress.interrupted_at", percent:)}#{Ansi::RESET}"
           else
-            "  #{Ansi::YELLOW}#{I18n.t("progressbar.interrupted")}#{Ansi::RESET}"
+            "  #{Ansi::YELLOW}#{I18n.t("mini_progress.interrupted")}#{Ansi::RESET}"
           end
         else
           ""
@@ -481,7 +481,7 @@ module MiniProgress
       end
 
       # The skip, warning, and error labels, shown only when the count is above
-      # 0, using the shared `progressbar.*` translations. Each one has its own
+      # 0, using the shared `mini_progress.*` translations. Each one has its own
       # glyph, not just a color, so it can be read without seeing color. The
       # error glyph is ⊗, not the status ✗, so the two don't look alike.
       def annotations(step)

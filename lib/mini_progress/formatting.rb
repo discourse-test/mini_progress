@@ -17,7 +17,7 @@ module MiniProgress
     # the form; `number` is the same value already grouped, which the
     # translation inserts.
     def count_label(kind, count)
-      I18n.t("progressbar.#{kind}", count:, number: format_count(count))
+      I18n.t("mini_progress.#{kind}", count:, number: format_count(count))
     end
 
     # Formats a duration as M:SS, switching to H:MM:SS past an hour.
