@@ -4,11 +4,11 @@ require "pty"
 require "io/console"
 require "tempfile"
 
-# End-to-end: the real reporter, selected by Reporting::Factory, driven under a
+# End-to-end: the real reporter, selected by MiniProgress::Factory, driven under a
 # real PTY (or a plain pipe). This is the regression net that mechanically
 # catches rendering artifacts a unit test can't — the reconstructed screen comes
 # from AnsiScreen.
-RSpec.describe Migrations::Reporting::Tui do
+RSpec.describe MiniProgress::Tui do
   let(:driver) { TuiReporterDriver::PATH }
 
   # Runs the driver to completion, returns [raw_output, status]. `actions` is a
@@ -70,7 +70,7 @@ RSpec.describe Migrations::Reporting::Tui do
     # rows and the run produced far more than 10 rows of output.
     %w[Categories Users Posts Tags Uploads].each { |title| expect(history).to match(/✓ #{title}/) }
     expect(history).to include("Re-checking orphaned uploads") # a notice, too
-    expect(out).to end_with(Migrations::Reporting::Tui::Ansi::SHOW_CURSOR) # cursor restored
+    expect(out).to end_with(MiniProgress::Tui::Ansi::SHOW_CURSOR) # cursor restored
   end
 
   it "exits cleanly on SIGINT: code 130, cursor shown, tty untouched, interrupt persisted" do
@@ -86,8 +86,8 @@ RSpec.describe Migrations::Reporting::Tui do
       )
 
     expect(status.exitstatus).to eq(130)
-    expect(out).to include(Migrations::Reporting::Tui::Ansi::SHOW_CURSOR)
-    expect(out).to end_with(Migrations::Reporting::Tui::Ansi::SHOW_CURSOR)
+    expect(out).to include(MiniProgress::Tui::Ansi::SHOW_CURSOR)
+    expect(out).to end_with(MiniProgress::Tui::Ansi::SHOW_CURSOR)
 
     screen = AnsiScreen.new(width: 100).feed(out)
     expect(screen.content_rows.join("\n")).to match(/Posts.*interrupted at \d+%/)

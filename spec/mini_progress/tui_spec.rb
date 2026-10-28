@@ -2,11 +2,11 @@
 
 require "stringio"
 
-RSpec.describe Migrations::Reporting::Tui do
+RSpec.describe MiniProgress::Tui do
   # The bulk of the coverage drives the pure, single-threaded renderer directly
   # (injected clock, output, and width) and reconstructs the visible screen with
   # AnsiScreen — no threads, fully deterministic.
-  describe Migrations::Reporting::Tui::Renderer do
+  describe MiniProgress::Tui::Renderer do
     subject(:renderer) { described_class.new(output: io, width: 120, clock: -> { time[0] }) }
 
     let(:io) { StringIO.new }
@@ -305,7 +305,7 @@ RSpec.describe Migrations::Reporting::Tui do
       it "colors the count when color is on" do
         running_step("Posts", 8)
         renderer.repaint
-        expect(io.string).to include("#{Migrations::Reporting::Tui::Ansi::MAGENTA}8×")
+        expect(io.string).to include("#{MiniProgress::Tui::Ansi::MAGENTA}8×")
       end
 
       it "does not affect the count column shared with finished rows" do
@@ -342,7 +342,7 @@ RSpec.describe Migrations::Reporting::Tui do
           no_color.repaint
 
           expect(screen.content_rows.first).to include("8×")
-          expect(io.string).not_to include(Migrations::Reporting::Tui::Ansi::MAGENTA)
+          expect(io.string).not_to include(MiniProgress::Tui::Ansi::MAGENTA)
         end
       end
     end
@@ -713,7 +713,7 @@ RSpec.describe Migrations::Reporting::Tui do
       reporter.start_step("Users").finish
       reporter.close
       expect { reporter.close }.not_to raise_error
-      expect(io.string).to end_with(Migrations::Reporting::Tui::Ansi::SHOW_CURSOR)
+      expect(io.string).to end_with(MiniProgress::Tui::Ansi::SHOW_CURSOR)
     end
 
     it "does not raise, and warns, when the render thread's output breaks" do

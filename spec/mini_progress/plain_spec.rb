@@ -2,7 +2,7 @@
 
 require "stringio"
 
-RSpec.describe Migrations::Reporting::Plain do
+RSpec.describe MiniProgress::Plain do
   subject(:reporter) { described_class.new(output: io, clock: -> { time[0] }) }
 
   let(:io) { StringIO.new }

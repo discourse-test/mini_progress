@@ -5,7 +5,7 @@ require "stringio"
 # Reflow is the one case a plain PTY test can't judge (a PTY only delivers
 # WINCH; rewrapping is emulator display behaviour). The screen interpreter
 # models both wrap families and asserts the recovery invariants under each.
-RSpec.describe Migrations::Reporting::Tui do
+RSpec.describe MiniProgress::Tui do
   describe "the reflow recovery invariants (interpreter)" do
     # A StringIO that also answers `tty?`/`winsize`, so the renderer's real
     # resize path runs (consume_resize re-reads winsize at a frame boundary).
@@ -21,7 +21,7 @@ RSpec.describe Migrations::Reporting::Tui do
       it "keeps history and the live region uncorrupted on shrink (#{wrap_mode})" do
         time = [0.0]
         io = fake_tty(60)
-        renderer = Migrations::Reporting::Tui::Renderer.new(output: io, clock: -> { time[0] })
+        renderer = MiniProgress::Tui::Renderer.new(output: io, clock: -> { time[0] })
 
         renderer.apply([:start, "Categories", "Categories"])
         renderer.apply([:progress_begin, "Categories", 10])
