@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# The number helper relies on ActiveSupport's autoload setup, which only the
+# base require installs.
+require "active_support"
 require "active_support/number_helper"
 
 module MiniProgress
